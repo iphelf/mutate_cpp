@@ -86,7 +86,11 @@ class Executor:
             patchfile.close()
 
             # step 2: apply patch
-            self.__execute_command_timeout('patch -p1 --input={patchfile} {inputfile}'.format(patchfile=patchfile.name, inputfile=file.filename), cwd='/')
+            self.__execute_command_timeout(
+                'patch --ignore-whitespace -p1 --input={patchfile} {inputfile}'.format(
+                    patchfile=patchfile.name, inputfile=file.filename),
+                cwd='/'
+            )
 
             # step 3: command pipeline
             success = self.__apply_command(patch, 'build_command') and \
@@ -100,8 +104,11 @@ class Executor:
                  db.session.commit()
 
             # step 4: revert patch
-            self.__execute_command_timeout('patch -p1 --reverse --input={patchfile} {inputfile}'.format(patchfile=patchfile.name, inputfile=file.filename),
-                                       cwd='/')
+            self.__execute_command_timeout(
+                'patch --ignore-whitespace -p1 --reverse --input={patchfile} {inputfile}'.format(
+                    patchfile=patchfile.name, inputfile=file.filename),
+                cwd='/'
+            )
 
             # step 6: delete patch file
             os.remove(patchfile.name)
