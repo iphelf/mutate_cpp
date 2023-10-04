@@ -311,7 +311,12 @@ def route_v2_project_project_id_files_file_id_generate(project_id, file_id):
             last_line = -1
 
         s = SourceFile(file, first_line, last_line)
-        s.generate_patches()
+        selected_mutators = {}
+        all_mutators = get_mutators()
+        for mutator_id in all_mutators:
+            if mutator_id in request.form:
+                selected_mutators[mutator_id] = all_mutators[mutator_id]
+        s.generate_patches(selected_mutators)
         flash('Successfully created patches.', category='message')
         return redirect(url_for('route_v2_project_project_id', project_id=project.id))
 

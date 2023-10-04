@@ -3,7 +3,8 @@
 from app import db
 import os
 from datetime import datetime
-from app.utils.Mutation import get_mutators
+from typing import Optional
+from app.utils.Mutation import get_mutators, Mutator
 from app.utils.Replacement import Replacement
 from app.models import File, Patch
 
@@ -25,8 +26,9 @@ class SourceFile:
         # read the relevant content
         self.content = '\n'.join(self.full_content[self.first_line - 1:self.last_line])  # type: str
 
-    def generate_patches(self):
-        mutators = get_mutators()
+    def generate_patches(self, mutators: Optional[dict[str, Mutator]] = None):
+        if mutators is None:
+            mutators = get_mutators()
 
         for line_number, line_raw in self.__get_lines():
             for mutator_name, mutator in mutators.items():

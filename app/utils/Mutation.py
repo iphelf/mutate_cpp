@@ -51,7 +51,15 @@ class SimplePattern:
 
 ##############################################################################
 
-class LineDeletionMutator:
+class Mutator:
+    mutator_id: str
+    description: str
+    tags: list[str]
+
+    def find_mutations(self, line: str) -> list[Replacement]: ...
+
+
+class LineDeletionMutator(Mutator):
     mutator_id = 'lineDeletion'
     description = 'Deletes a whole line.'
     tags = ['naive']
@@ -67,7 +75,7 @@ class LineDeletionMutator:
                             new_val=None)]
 
 
-class LogicalOperatorMutator:
+class LogicalOperatorMutator(Mutator):
     mutator_id = 'logicalOperator'
     description = 'Replaces logical operators.'
     tags = ['logical', 'operator']
@@ -86,7 +94,7 @@ class LogicalOperatorMutator:
         return self.pattern.mutate(line)
 
 
-class ComparisonOperatorMutator:
+class ComparisonOperatorMutator(Mutator):
     mutator_id = 'comparisonOperator'
     description = 'Replaces comparison operators.'
     tags = ['operator', 'comparison']
@@ -105,7 +113,7 @@ class ComparisonOperatorMutator:
         return self.pattern.mutate(line)
 
 
-class IncDecOperatorMutator:
+class IncDecOperatorMutator(Mutator):
     mutator_id = 'incDecOperator'
     description = 'Swaps increment and decrement operators.'
     tags = ['operator', 'artithmetic']
@@ -120,7 +128,7 @@ class IncDecOperatorMutator:
         return self.pattern.mutate(line)
 
 
-class AssignmentOperatorMutator:
+class AssignmentOperatorMutator(Mutator):
     mutator_id = 'assignmentOperator'
     description = 'Replaces assignment operators.'
     tags = ['operator']
@@ -139,7 +147,7 @@ class AssignmentOperatorMutator:
         return self.pattern.mutate(line)
 
 
-class BooleanAssignmentOperatorMutator:
+class BooleanAssignmentOperatorMutator(Mutator):
     mutator_id = 'booleanAssignmentOperator'
     description = 'Replaces Boolean assignment operators.'
     tags = ['operator', 'logical']
@@ -158,7 +166,7 @@ class BooleanAssignmentOperatorMutator:
         return self.pattern.mutate(line)
 
 
-class ArithmeticOperatorMutator:
+class ArithmeticOperatorMutator(Mutator):
     mutator_id = 'arithmeticOperator'
     description = 'Replaces arithmetic operators.'
     tags = ['operator', 'artithmetic']
@@ -176,7 +184,7 @@ class ArithmeticOperatorMutator:
         return self.pattern.mutate(line)
 
 
-class BooleanArithmeticOperatorMutator:
+class BooleanArithmeticOperatorMutator(Mutator):
     mutator_id = 'booleanArithmeticOperator'
     description = 'Replaces Boolean arithmetic operators.'
     tags = ['operator', 'logical']
@@ -194,7 +202,7 @@ class BooleanArithmeticOperatorMutator:
         return self.pattern.mutate(line)
 
 
-class BooleanLiteralMutator:
+class BooleanLiteralMutator(Mutator):
     mutator_id = 'booleanLiteral'
     description = 'Swaps the Boolean literals true and false.'
     tags = ['logical', 'literal']
@@ -209,7 +217,7 @@ class BooleanLiteralMutator:
         return self.pattern.mutate(line)
 
 
-class StdInserterMutator:
+class StdInserterMutator(Mutator):
     mutator_id = 'stdInserter'
     description = 'Changes the position where elements are inserted.'
     tags = ['stl']
@@ -224,7 +232,7 @@ class StdInserterMutator:
         return self.pattern.mutate(line)
 
 
-class StdRangePredicateMutator:
+class StdRangePredicateMutator(Mutator):
     mutator_id = 'stdRangePredicate'
     description = 'Changes the semantics of an STL range predicate.'
     tags = ['stl']
@@ -240,7 +248,7 @@ class StdRangePredicateMutator:
         return self.pattern.mutate(line)
 
 
-class StdMinMaxMutator:
+class StdMinMaxMutator(Mutator):
     mutator_id = 'stdMinMax'
     description = 'Swaps STL minimum by maximum calls.'
     tags = ['stl', 'artithmetic']
@@ -255,7 +263,7 @@ class StdMinMaxMutator:
         return self.pattern.mutate(line)
 
 
-class DecimalNumberLiteralMutator:
+class DecimalNumberLiteralMutator(Mutator):
     mutator_id = 'decimalNumberLiteral'
     description = 'Replaces decimal number literals with different values.'
     tags = ['numerical', 'literal']
@@ -290,7 +298,7 @@ class DecimalNumberLiteralMutator:
         return result
 
 
-class HexNumberLiteralMutator:
+class HexNumberLiteralMutator(Mutator):
     mutator_id = 'hexNumberLiteral'
     description = 'Replaces hex number literals with different values.'
     tags = ['numerical', 'literal']
@@ -322,7 +330,7 @@ class HexNumberLiteralMutator:
         return result
 
 
-class IteratorRangeMutator:
+class IteratorRangeMutator(Mutator):
     mutator_id = 'iteratorRange'
     description = 'Changes an iterator range.'
     tags = ['iterators']
