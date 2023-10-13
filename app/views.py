@@ -1,5 +1,5 @@
 # coding=utf-8
-
+from typing import Optional
 from flask import render_template, abort, redirect, url_for, flash, request
 from app import app, db
 from app.forms import CreateProjectForm, CreateFileForm, SetConfirmationForm
@@ -9,14 +9,19 @@ from app.utils.Mutation import get_mutators
 from app.utils.Statistics import Statistics
 import os
 from app.utils.Executor import Executor
+from app.utils.ParExecutor import ParExecutor
+from app.utils.SeqExecutor import SeqExecutor
 
-executor = None
+executor: Optional[Executor] = None
 
 
 @app.before_first_request
 def init_executor():
     global executor
-    executor = Executor(app)
+    if app.config['PARALLEL_WORKFLOW']:
+        executor = ParExecutor(app)
+    else:
+        executor = SeqExecutor(app)
 
 
 ##############################################################################

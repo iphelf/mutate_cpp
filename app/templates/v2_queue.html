@@ -9,7 +9,11 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Queue</h1>
+    {% if executor.is_parallel() %}
+        <h1>Queue (Parallel)</h1>
+    {% else %}
+        <h1>Queue (Sequential)</h1>
+    {% endif %}
 
     <p>
     {% if executor.running %}
